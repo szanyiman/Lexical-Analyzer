@@ -114,7 +114,7 @@ void Analyzer::read_in_identifier() {
         read_in_end_of_identifier();
 
     else if (curr_char == ':')
-        read_in_punct();
+        read_in_end_of_identifier();
 
     else if (curr_char == '=')
         read_in_end_of_identifier();
@@ -137,8 +137,15 @@ void Analyzer::read_in_identifier() {
 
 
 void Analyzer::read_in_end_of_identifier() {
-    std::cout << "  is an identifier";
-    std::cout << std::endl; std::cout << curr_char;
+    std::cout << " is an identifier" << std::endl;
+    if (curr_char==':')
+    {
+        read_in_punct();
+    }
+    if (!curr_char=='{' || curr_char=='}')
+    {
+       std::cout << std::endl; std::cout << curr_char;
+    }
     source_file.putback(curr_char);
     //std::cout << curr_char << std::endl;
     read_in_starting_state();
@@ -200,7 +207,7 @@ void Analyzer::read_in_end_of_number() {
 
 void Analyzer::read_in_comment() {
     curr_char = source_file.get();
-    std::cout << curr_char;
+    //std::cout << curr_char;
 
     if (char_is_character(curr_char))
         read_in_comment();
@@ -399,7 +406,7 @@ void Analyzer::read_in_end_of_big_comment() {
 void Analyzer::read_in_punct() {
     std::cout << curr_char;
     curr_char = source_file.get();
-    std::cout << curr_char;
+    //std::cout << curr_char;
 
     if (char_is_character(curr_char))
         read_in_correcting();
@@ -445,6 +452,7 @@ void Analyzer::read_in_punct() {
 }
 
 void Analyzer::read_in_punct_equality() {
+    std::cout << curr_char;
     std::cout << " is a token" << std::endl;
     read_in_starting_state();
 }
@@ -563,6 +571,7 @@ void Analyzer::read_in_bigger_then_or_equal() {
 
 void Analyzer::read_in_correcting() {
     source_file.putback(curr_char);
+    std::cout << std::endl;
     read_in_starting_state();
 }
 
